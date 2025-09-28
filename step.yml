@@ -1,0 +1,87 @@
+---
+title: Get OIDC Identity Token
+summary: The Step fetches an OIDC identity token.
+description: |-
+  The "Prepare App Store Release" Step allows you to streamline the process of preparing a new release for your iOS app in the Release Management. This Step leverages the Bitrise Public API to facilitate the creation and configuration of an App Store release in the Release Management.
+
+  By utilizing this Step, you can automate the initial stages of the release process and ensure a consistent and efficient deployment experience. Instead of manually navigating through the Release Management interface to create a release, the Step empowers you to initiate the release setup programmatically, saving valuable time and effort.
+
+  It's important to note that this Step doesn't create a release directly in the App Store Connect. Instead, it streamlines the process by generating a release in the [Release Management](https://devcenter.bitrise.io/en/release-management.html).
+website: https://github.com/bitrise-steplib/bitrise-step-get-identity-token
+source_code_url: https://github.com/bitrise-steplib/bitrise-step-get-identity-token
+support_url: https://github.com/bitrise-steplib/bitrise-step-get-identity-token/issues
+
+type_tags:
+- utility
+
+project_type_tags:
+- ios
+- react-native
+- cordova
+- ionic
+- flutter
+
+toolkit:
+  go:
+    package_name: github.com/bitrise-steplib/bitrise-step-get-identity-token
+
+inputs:
+- subject:
+  opts:
+    title: Token subject
+    summary: The subject for the identity token.
+    description: |-
+      The subject for the identity token.
+
+      This could be the email or unique identifier of the user or service account for whom the token is being generated.
+    is_required: true
+
+- audience:
+  opts:
+    title: Token audience
+    summary: The audience for the identity token.
+    description: |-
+      The audience for the identity token.
+
+      This could be the URL of the service you want to access with the token or a specific identifier provided by the service.
+    is_required: true
+
+- build_url: $BITRISE_BUILD_URL
+  opts:
+    category: API settings
+    title: Bitrise build url
+    summary: Unique build URL of this build on Bitrise.io.
+    description: |-
+      Unique build URL of this build on Bitrise.io.
+
+      By default the step will use the Bitrise API.
+    is_required: true
+    is_dont_change_value: true
+
+- build_api_token: $BITRISE_BUILD_API_TOKEN
+  opts:
+    category: API settings
+    title: Bitrise build token
+    summary: The build's API Token for the build on Bitrise.io
+    description: |-
+      The build's API Token for the build on Bitrise.io
+
+      This will be used to communicate with the Bitrise API
+    is_required: true
+    is_sensitive: true
+
+- verbose: "false"
+  opts:
+    category: Debug
+    title: Enable verbose logging
+    summary: Enable logging additional information for debugging.
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
+
+outputs:
+- BITRISE_IDENTITY_TOKEN:
+  opts:
+    title: Identity token
+    summary: The newly generated identity token.
