@@ -12,5 +12,5 @@ workflows:
         title: Check outputs
         is_always_run: true
         inputs:
-          - envs: |-
-              BITRISE_IDENTITY_TOKEN
+        - envs: |-
+            BITRISE_IDENTITY_TOKEN
