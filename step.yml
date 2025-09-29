@@ -13,20 +13,6 @@ support_url: https://github.com/bitrise-steplib/bitrise-step-get-identity-token/
 type_tags:
 - utility
 
-project_type_tags:
-- ios
-- macos
-- android
-- react-native
-- cordova
-- ionic
-- flutter
-- kotlin-multiplatform
-- node-js
-- java
-- web
-- other
-
 toolkit:
   go:
     package_name: github.com/bitrise-steplib/bitrise-step-get-identity-token

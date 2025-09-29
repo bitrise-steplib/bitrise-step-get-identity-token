@@ -7,11 +7,10 @@ The Step fetches an OIDC identity token.
 <details>
 <summary>Description</summary>
 
-The "Prepare App Store Release" Step allows you to streamline the process of preparing a new release for your iOS app in the Release Management. This Step leverages the Bitrise Public API to facilitate the creation and configuration of an App Store release in the Release Management.
+The Step fetches an OIDC identity token.
 
-By utilizing this Step, you can automate the initial stages of the release process and ensure a consistent and efficient deployment experience. Instead of manually navigating through the Release Management interface to create a release, the Step empowers you to initiate the release setup programmatically, saving valuable time and effort.
-
-It's important to note that this Step doesn't create a release directly in the App Store Connect. Instead, it streamlines the process by generating a release in the [Release Management](https://devcenter.bitrise.io/en/release-management.html).
+The token can be used to authenticate with services that support OIDC tokens, such as Google Cloud, AWS, Azure or others.
+This allows secure, token-based authentication without the need to manage long-lived credentials.
 </details>
 
 ## 🧩 Get started
