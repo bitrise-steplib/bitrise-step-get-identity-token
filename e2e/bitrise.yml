@@ -8,13 +8,9 @@ workflows:
         inputs:
         - subject: A
         - audience: B
-    - script:
+    - git::https://github.com/bitrise-steplib/bitrise-step-check-step-outputs.git@main:
+        title: Check outputs
+        is_always_run: true
         inputs:
-        - content: |-
-            #!/bin/env bash
-            set -ex
-
-            if [[ -z "BITRISE_IDENTITY_TOKEN" ]] ; then
-                echo "BITRISE_IDENTITY_TOKEN is empty"
-                exit 1
-            fi
+          - envs: |-
+              BITRISE_IDENTITY_TOKEN
