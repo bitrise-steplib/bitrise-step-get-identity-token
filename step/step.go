@@ -40,7 +40,6 @@ func (r TokenFetcher) ProcessConfig() (Config, error) {
 	return Config{
 		BuildURL:   input.BuildURL,
 		BuildToken: input.BuildToken,
-		Subject:    input.Subject,
 		Audience:   input.Audience,
 	}, nil
 }
@@ -49,7 +48,6 @@ func (r TokenFetcher) Run(config Config) (Result, error) {
 	client := api.NewDefaultAPIClient(config.BuildURL, config.BuildToken, r.logger)
 
 	parameter := api.GetIdentityTokenParameter{
-		Subject:  config.Subject,
 		Audience: config.Audience,
 	}
 	token, err := client.GetIdentityToken(parameter)

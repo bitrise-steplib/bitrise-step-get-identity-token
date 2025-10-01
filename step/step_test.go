@@ -16,14 +16,12 @@ func TestConfigParsing(t *testing.T) {
 	config := Config{
 		BuildURL:   "build-url",
 		BuildToken: stepconf.Secret("build-token"),
-		Subject:    "subject",
 		Audience:   "audience",
 	}
 
 	mockEnvRepository := mocks.NewRepository(t)
 	mockEnvRepository.On("Get", "build_url").Return(config.BuildURL)
 	mockEnvRepository.On("Get", "build_api_token").Return(string(config.BuildToken))
-	mockEnvRepository.On("Get", "subject").Return(config.Subject)
 	mockEnvRepository.On("Get", "audience").Return(config.Audience)
 	mockEnvRepository.On("Get", "verbose").Return("false")
 
