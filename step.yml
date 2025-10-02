@@ -18,16 +18,6 @@ toolkit:
     package_name: github.com/bitrise-steplib/bitrise-step-get-identity-token
 
 inputs:
-- subject:
-  opts:
-    title: Token subject
-    summary: The subject for the identity token.
-    description: |-
-      The subject for the identity token.
-
-      This could be the email or unique identifier of the user or service account for whom the token is being generated.
-    is_required: true
-
 - audience:
   opts:
     title: Token audience
