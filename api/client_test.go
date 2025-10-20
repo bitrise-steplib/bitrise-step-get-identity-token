@@ -69,20 +69,22 @@ func TestHandlesResponse(t *testing.T) {
 		responseBody         string
 		wantsError           bool
 		expectedErrorMessage string
-		expectedOutput       string
+		expectedOutput       GetIdentityTokenResponse
 	}{
 		{
 			name:               "Successful response",
 			responseStatusCode: 200,
 			responseBody: `{
-"key1": "value1",
-"key2": "value2"
+"id_token": "value1",
+"token_type": "value2",
+"expires_in": 3600
 }`,
 			wantsError: false,
-			expectedOutput: `{
-"key1": "value1",
-"key2": "value2"
-}`,
+			expectedOutput: GetIdentityTokenResponse{
+				Token:     "value1",
+				Type:      "value2",
+				ExpiresIn: 3600,
+			},
 		},
 		{
 			name:                 "Failure 1",

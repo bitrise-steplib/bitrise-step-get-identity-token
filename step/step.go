@@ -50,7 +50,7 @@ func (r TokenFetcher) Run(config Config) (Result, error) {
 	parameter := api.GetIdentityTokenParameter{
 		Audience: config.Audience,
 	}
-	token, err := client.GetIdentityToken(parameter)
+	response, err := client.GetIdentityToken(parameter)
 	if err != nil {
 		return Result{}, err
 	}
@@ -58,7 +58,7 @@ func (r TokenFetcher) Run(config Config) (Result, error) {
 	r.logger.Donef("Identity token fetched.")
 
 	return Result{
-		IdentityToken: token,
+		IdentityToken: response.Token,
 	}, nil
 }
 
