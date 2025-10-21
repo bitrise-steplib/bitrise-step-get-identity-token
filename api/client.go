@@ -41,10 +41,10 @@ func NewDefaultAPIClient(baseURL string, authToken stepconf.Secret, logger log.L
 	}
 }
 
-func (c DefaultAPIClient) GetIdentityToken(params GetIdentityTokenParameter) (string, error) {
+func (c DefaultAPIClient) GetIdentityToken(params GetIdentityTokenParameter) (GetIdentityTokenResponse, error) {
 	req, err := c.request(params)
 	if err != nil {
-		return "", err
+		return GetIdentityTokenResponse{}, err
 	}
 
 	dump, err := httputil.DumpRequest(req, false)
@@ -56,7 +56,7 @@ func (c DefaultAPIClient) GetIdentityToken(params GetIdentityTokenParameter) (st
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", err
+		return GetIdentityTokenResponse{}, err
 	}
 
 	defer func() {
@@ -76,15 +76,15 @@ func (c DefaultAPIClient) GetIdentityToken(params GetIdentityTokenParameter) (st
 		errResponse, err := c.parseError(resp)
 		if err != nil {
 			c.logger.Warnf("Failed to parse failure reason from the response: %s", err)
-			return "", fmt.Errorf("request to %s has status code %d (should be 2XX)", req.URL.String(), resp.StatusCode)
+			return GetIdentityTokenResponse{}, fmt.Errorf("request to %s has status code %d (should be 2XX)", req.URL.String(), resp.StatusCode)
 		} else {
-			return "", fmt.Errorf("request to %s has status code %d (should be 2XX): %s", req.URL.String(), resp.StatusCode, errResponse.Message)
+			return GetIdentityTokenResponse{}, fmt.Errorf("request to %s has status code %d (should be 2XX): %s", req.URL.String(), resp.StatusCode, errResponse.Message)
 		}
 	}
 
 	parsedResp, err := c.parseModel(resp)
 	if err != nil {
-		return "", fmt.Errorf("release successfully created but response couldn't be parsed: %s", err)
+		return GetIdentityTokenResponse{}, fmt.Errorf("release successfully created but response couldn't be parsed: %s", err)
 	}
 	return parsedResp, nil
 }
@@ -124,8 +124,13 @@ func (c DefaultAPIClient) parseError(resp *http.Response) (errorReponse, error) 
 	return response, nil
 }
 
-func (c DefaultAPIClient) parseModel(resp *http.Response) (string, error) {
-	var body []byte
-	body, err := io.ReadAll(resp.Body)
-	return string(body), err
+func (c DefaultAPIClient) parseModel(resp *http.Response) (GetIdentityTokenResponse, error) {
+	var response GetIdentityTokenResponse
+
+	err := json.NewDecoder(resp.Body).Decode(&response)
+	if err != nil {
+		return GetIdentityTokenResponse{}, err
+	}
+
+	return response, nil
 }
