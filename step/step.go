@@ -41,6 +41,7 @@ func (r TokenFetcher) ProcessConfig() (Config, error) {
 		BuildURL:   input.BuildURL,
 		BuildToken: input.BuildToken,
 		Audience:   input.Audience,
+		IsDebugLog: input.Verbose,
 	}, nil
 }
 
@@ -62,7 +63,7 @@ func (r TokenFetcher) Run(config Config) (Result, error) {
 	}, nil
 }
 
-func (r TokenFetcher) Export(result Result) error {
+func (r TokenFetcher) Export(result Result, isDebugLog bool) error {
 	r.logger.Printf("The following outputs are exported as environment variables:")
 
 	values := map[string]string{
@@ -75,6 +76,9 @@ func (r TokenFetcher) Export(result Result) error {
 			return err
 		}
 
+		if !isDebugLog {
+			value = "***"
+		}
 		r.logger.Donef("$%s = %s", key, value)
 	}
 
