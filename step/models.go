@@ -13,7 +13,7 @@ type Config struct {
 	BuildURL   string
 	BuildToken stepconf.Secret
 	Audience   string
-	IsDebugLog bool
+	Verbose    bool
 }
 
 type Result struct {

@@ -15,6 +15,7 @@ type TokenFetcher struct {
 	envRepository env.Repository
 	exporter      export.Exporter
 	logger        log.Logger
+	verbose       bool
 }
 
 func NewTokenFetcher(inputParser stepconf.InputParser, envRepository env.Repository, exporter export.Exporter, logger log.Logger) TokenFetcher {
@@ -41,11 +42,13 @@ func (r TokenFetcher) ProcessConfig() (Config, error) {
 		BuildURL:   input.BuildURL,
 		BuildToken: input.BuildToken,
 		Audience:   input.Audience,
-		IsDebugLog: input.Verbose,
+		Verbose:    input.Verbose,
 	}, nil
 }
 
 func (r TokenFetcher) Run(config Config) (Result, error) {
+	r.verbose = config.Verbose
+
 	client := api.NewDefaultAPIClient(config.BuildURL, config.BuildToken, r.logger)
 
 	parameter := api.GetIdentityTokenParameter{
@@ -63,7 +66,7 @@ func (r TokenFetcher) Run(config Config) (Result, error) {
 	}, nil
 }
 
-func (r TokenFetcher) Export(result Result, isDebugLog bool) error {
+func (r TokenFetcher) Export(result Result) error {
 	r.logger.Printf("The following outputs are exported as environment variables:")
 
 	values := map[string]string{
@@ -76,10 +79,11 @@ func (r TokenFetcher) Export(result Result, isDebugLog bool) error {
 			return err
 		}
 
-		if !isDebugLog {
-			value = "***"
+		if r.verbose {
+			r.logger.Donef("$%s = %s", key, value)
+		} else {
+			r.logger.Donef("$%s", key)
 		}
-		r.logger.Donef("$%s = %s", key, value)
 	}
 
 	return nil

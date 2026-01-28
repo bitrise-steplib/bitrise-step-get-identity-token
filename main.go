@@ -34,7 +34,7 @@ func run() ExitCode {
 		return Failure
 	}
 
-	if err := fetcher.Export(result, config.IsDebugLog); err != nil {
+	if err := fetcher.Export(result); err != nil {
 		logger.Errorf("Export outputs: %s", err)
 		return Failure
 	}
