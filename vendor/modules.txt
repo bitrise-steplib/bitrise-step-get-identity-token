@@ -5,11 +5,8 @@ github.com/bitrise-io/go-steputils/v2/stepconf
 github.com/bitrise-io/go-steputils/v2/stepenv
 # github.com/bitrise-io/go-utils v1.0.1
 ## explicit; go 1.13
-github.com/bitrise-io/go-utils/colorstring
 github.com/bitrise-io/go-utils/command
-github.com/bitrise-io/go-utils/log
 github.com/bitrise-io/go-utils/pathutil
-github.com/bitrise-io/go-utils/retry
 github.com/bitrise-io/go-utils/ziputil
 # github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.19
 ## explicit; go 1.17
@@ -19,6 +16,7 @@ github.com/bitrise-io/go-utils/v2/exitcode
 github.com/bitrise-io/go-utils/v2/log
 github.com/bitrise-io/go-utils/v2/log/colorstring
 github.com/bitrise-io/go-utils/v2/pathutil
+github.com/bitrise-io/go-utils/v2/retryhttp
 # github.com/davecgh/go-spew v1.1.1
 ## explicit
 github.com/davecgh/go-spew/spew
