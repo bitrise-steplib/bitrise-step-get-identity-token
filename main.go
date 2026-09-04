@@ -45,7 +45,7 @@ func run() ExitCode {
 func createTokenFetcher(logger log.Logger) step.TokenFetcher {
 	envRepository := stepenv.NewRepository(env.NewRepository())
 	inputParser := stepconf.NewInputParser(envRepository)
-	exporter := export.NewExporter(command.NewFactory(envRepository))
+	exporter := export.NewDefaultExporter(command.NewFactory(envRepository))
 
 	return step.NewTokenFetcher(inputParser, envRepository, exporter, logger)
 }

@@ -26,7 +26,7 @@ func TestConfigParsing(t *testing.T) {
 	mockEnvRepository.On("Get", "verbose").Return("false")
 
 	inputParser := stepconf.NewInputParser(mockEnvRepository)
-	exporter := export.NewExporter(mocks.NewFactory(t))
+	exporter := export.NewDefaultExporter(mocks.NewFactory(t))
 	sut := NewTokenFetcher(inputParser, mockEnvRepository, exporter, log.NewLogger())
 
 	receivedConfig, err := sut.ProcessConfig()
@@ -47,7 +47,7 @@ func TestExport(t *testing.T) {
 
 	mockEnvRepository := mocks.NewRepository(t)
 	inputParser := stepconf.NewInputParser(mockEnvRepository)
-	exporter := export.NewExporter(mockFactory)
+	exporter := export.NewDefaultExporter(mockFactory)
 	sut := NewTokenFetcher(inputParser, mockEnvRepository, exporter, log.NewLogger())
 
 	err := sut.Export(result)
