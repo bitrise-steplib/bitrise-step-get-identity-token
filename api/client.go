@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/http/httputil"
 	"time"
 
 	"github.com/bitrise-io/go-steputils/v2/stepconf"
@@ -47,12 +46,8 @@ func (c DefaultAPIClient) GetIdentityToken(params GetIdentityTokenParameter) (Ge
 		return GetIdentityTokenResponse{}, err
 	}
 
-	dump, err := httputil.DumpRequest(req, false)
-	if err != nil {
-		c.logger.Warnf("request dump failed: %s", err)
-	} else {
-		c.logger.Debugf("Request dump: %s", string(dump))
-	}
+	// Don't dump the request: its headers carry the build API token.
+	c.logger.Debugf("Request: %s %s", req.Method, req.URL.String())
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -65,12 +60,8 @@ func (c DefaultAPIClient) GetIdentityToken(params GetIdentityTokenParameter) (Ge
 		}
 	}()
 
-	dump, err = httputil.DumpResponse(resp, true)
-	if err != nil {
-		c.logger.Warnf("response dump failed: %s", err)
-	} else {
-		c.logger.Debugf("Response dump: %s\n", string(dump))
-	}
+	// Don't dump the response body: on success it's the identity token.
+	c.logger.Debugf("Response status: %s", resp.Status)
 
 	if resp.StatusCode >= 300 || resp.StatusCode < 200 {
 		errResponse, err := c.parseError(resp)

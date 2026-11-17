@@ -124,6 +124,26 @@ func TestHandlesResponse(t *testing.T) {
 	}
 }
 
+func TestDebugLogDoesNotLeakTokens(t *testing.T) {
+	// Given
+	apiClient, mockHttpClient := createSutAndMock(t)
+	var logs bytes.Buffer
+	apiClient.logger = log.NewLogger(log.WithDebugLog(true), log.WithOutput(&logs))
+
+	const identityToken = "secret-identity-token"
+	setupMockNetworking(mockHttpClient, nil, fmt.Sprintf(`{"id_token":"%s"}`, identityToken), http.StatusOK)
+
+	// When
+	response, err := apiClient.GetIdentityToken(GetIdentityTokenParameter{Audience: "aud"})
+
+	// Then
+	assert.NoError(t, err)
+	assert.Equal(t, identityToken, response.Token)
+	assert.NotEmpty(t, logs.String())
+	assert.NotContains(t, logs.String(), identityToken)
+	assert.NotContains(t, logs.String(), authToken)
+}
+
 func createSutAndMock(t *testing.T) (DefaultAPIClient, *mocks.HttpClient) {
 	mockHttpClient := mocks.NewHttpClient(t)
 	apiClient := DefaultAPIClient{

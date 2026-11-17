@@ -15,7 +15,6 @@ type TokenFetcher struct {
 	envRepository env.Repository
 	exporter      export.Exporter
 	logger        log.Logger
-	verbose       bool
 }
 
 func NewTokenFetcher(inputParser stepconf.InputParser, envRepository env.Repository, exporter export.Exporter, logger log.Logger) TokenFetcher {
@@ -42,8 +41,6 @@ func (r *TokenFetcher) ProcessConfig() (Config, error) {
 }
 
 func (r *TokenFetcher) Run(config Config) (Result, error) {
-	r.verbose = config.Verbose
-
 	client := api.NewDefaultAPIClient(config.BuildURL, config.BuildToken, r.logger)
 
 	parameter := api.GetIdentityTokenParameter{
@@ -69,16 +66,13 @@ func (r *TokenFetcher) Export(result Result) error {
 	}
 
 	for key, value := range values {
-		err := r.exporter.ExportOutput(key, value)
+		// Sensitive, so the CLI redacts the token if a later step prints it.
+		err := r.exporter.ExportSecretOutput(key, value)
 		if err != nil {
 			return err
 		}
 
-		if r.verbose {
-			r.logger.Donef("$%s = %s", key, value)
-		} else {
-			r.logger.Donef("$%s", key)
-		}
+		r.logger.Donef("$%s", key)
 	}
 
 	return nil

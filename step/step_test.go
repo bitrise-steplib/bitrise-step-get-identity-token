@@ -62,5 +62,5 @@ func testCommand() command.Command {
 }
 
 func mockParameters(key, value string) []string {
-	return []string{"add", "--key", key, "--value", value}
+	return []string{"add", "--key", key, "--value", value, "--sensitive"}
 }
